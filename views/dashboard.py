@@ -1,11 +1,7 @@
-from struct import pack
-from threading import local
 import customtkinter as ctk
 from PIL import Image
 import sys
 import os
-
-from customtkinter.windows.widgets import image
 
 # D'abord tous les chemins
 sys.path.append("..")
@@ -80,48 +76,41 @@ def main_view():
     app = ctk.CTk()
     app.title("ScraperMeteo")
     app.geometry("1100x800")
-    #app.resizable(0,0)
+    app.resizable(0,0)
     app.configure(fg_color=DARK_COLOR["bg"])
 
     # Header frame
-    header_frame = ctk.CTkFrame(app, fg_color=DARK_COLOR["bg"],
-                            width=1050)
+    header_frame = ctk.CTkFrame(app, fg_color=DARK_COLOR["bg"], height=60)
     header_frame.pack_propagate(False)
-    header_frame.pack(pady=(20, 20), padx=10)
-
-    ctk.CTkLabel(header_frame,
-            text="ScraperMeteo", font=FONTS["title"],
-            fg_color=DARK_COLOR["bg"]).grid(row=0, column=0, padx= (20,700))
-
-    switch_theme_btn_img = ctk.CTkImage(Image.open(os.path.join(img_dir, "sun.png")),
-                                    size=(20, 20))
-
-    switch_theme_btn =  on_toggle(header_frame, switch_theme_btn_img, "Dark")
-    switch_theme_btn.grid(row=0, column=1, padx=(0,20))
-
+    header_frame.pack(fill="x", padx=20, pady=(15, 5))
+    
+    ctk.CTkLabel(header_frame, text="ScraperMeteo", font=FONTS["title"],
+                 text_color=DARK_COLOR["text"]).place(x=0, y=15)
+    
+    switch_theme_btn_img = ctk.CTkImage(Image.open(os.path.join(img_dir, "sun.png")), size=(20, 20))
+    switch_theme_btn = on_toggle(header_frame, switch_theme_btn_img, "Dark")
+    switch_theme_btn.place(relx=1.0, x=-20, y=10, anchor="ne")
+    
     # Search frame
-    search_frame = ctk.CTkFrame(app, fg_color=DARK_COLOR["bg"],
-                            width=1050)
+    search_frame = ctk.CTkFrame(app, fg_color=DARK_COLOR["bg"], height=65)
     search_frame.pack_propagate(False)
-    search_frame.pack(pady=10)
-
-    search_entry = entry(search_frame, "Entrer le nom d'une ville", 680, 45)
-    search_entry.pack(pady=10, anchor="w", padx=15, side="left")
-
+    search_frame.pack(fill="x", padx=20, pady=5)
+    
+    search_entry = entry(search_frame, "Entrer le nom d'une ville", 650, 45)
+    search_entry.place(x=0, y=10)
+    
     search_btn = btn_primary(search_frame, "Rechercher", "", 145, 45)
-    search_btn.pack(pady=10, anchor="w", padx=15, side="left")
-
-    filter_btn = ctk.CTkOptionMenu  (search_frame,
-                                    values=["Filtrer", "Filtrer"],
-                                    fg_color=DARK_COLOR["primary"],
-                                    text_color=DARK_COLOR["white"],
-                                    font=FONTS["button"],
-                                    cursor="hand2",
-                                    corner_radius=DIMENSIONS["border_radius"],
-                                    width=145, height=45)
-    filter_btn.pack(pady=10, anchor="w", padx=15, side="left")
-
-    center_frame = ctk.CTkFrame(app, fg_color=DARK_COLOR["bg"])
+    search_btn.place(x=665, y=10)
+    
+    filter_btn = ctk.CTkOptionMenu(search_frame, values=["Filtrer"],
+                                   fg_color=DARK_COLOR["primary"],
+                                   text_color=DARK_COLOR["white"],
+                                   font=FONTS["button"], cursor="hand2",
+                                   corner_radius=DIMENSIONS["border_radius"],
+                                   width=145, height=45)
+    filter_btn.place(x=820, y=10)
+    
+    center_frame = ctk.CTkFrame(app, fg_color=DARK_COLOR["white"], width=1050, height=330)
     center_frame.pack(pady=10)
 
     locat_ind_img = ctk.CTkImage(Image.open(os.path.join(img_dir, "locate.png")))
@@ -134,72 +123,59 @@ def main_view():
                             compound="left",
                             width=150, height=25
                             )
-    locat_ind.pack(pady=10, anchor="w", padx=15)
+    locat_ind.place(x=0, y=8)
 
     # Chart frame
     chart_frame = ctk.CTkFrame(center_frame, fg_color=DARK_COLOR["surface"],
                             border_width=1,
                             border_color=DARK_COLOR["border"],
                             corner_radius=DIMENSIONS["border_radius"],
-                            width=1050, height=300)
+                            width=1050, height=280)
     chart_frame.pack_propagate(False)
-    chart_frame.pack(pady=10, padx=15)
-
+    chart_frame.place(x=0, y=40)
    
 
     # Cards frame
-    cards_frame = ctk.CTkFrame(app, fg_color=DARK_COLOR["bg"],
-                            width=1050)
+    cards_frame = ctk.CTkFrame(app, fg_color=DARK_COLOR["white"], width=1050, height=330)
     cards_frame.pack_propagate(False)
-    cards_frame.pack(pady=10, padx=10)
+    cards_frame.pack(pady=10)
 
+    # Température
     temp_frame = ctk.CTkFrame(cards_frame, fg_color=DARK_COLOR["cards"]["temp"],
-                            width=335, height=100,
-                            corner_radius=DIMENSIONS["border_radius"]
-                            )
+                            width=335, height=100, corner_radius=DIMENSIONS["border_radius"])
     temp_frame.pack_propagate(False)
     temp_frame.grid(row=0, column=0, padx=10, pady=10)
+    temp_img = ctk.CTkImage(Image.open(os.path.join(img_dir, "temp.png")), size=(14, 20))
+    ctk.CTkLabel(temp_frame, text="  Température", font=FONTS["subtitle"],
+                 image=temp_img, compound="left", text_color=DARK_COLOR["white"]).place(x=15, y=15)
+    ctk.CTkLabel(temp_frame, text="25 C°", font=FONTS["h1"],
+                 text_color=DARK_COLOR["white"]).place(x=15, y=48)
 
-    temp_img = ctk.CTkImage(Image.open(os.path.join(img_dir, "temp.png")), size=(12, 22))
-
-    temp_label = ctk.CTkLabel(temp_frame, text="Température", font=FONTS["subtitle"],image=temp_img, compound="left", text_color=DARK_COLOR["white"])
-    temp_label.pack(pady=10, anchor="w", padx=15)
-
-    temp_value = ctk.CTkLabel(temp_frame, text="25 C°", font=FONTS["h1"], text_color=DARK_COLOR["white"])
-    temp_value.pack(pady=10, anchor="w", padx=15)
-
-
+    # Humidité
     humidity_frame = ctk.CTkFrame(cards_frame, fg_color=DARK_COLOR["cards"]["humidity"],
-                            width=335, height=100,
-                            corner_radius=DIMENSIONS["border_radius"])
-    humidity_frame.grid(row=0, column=1, padx=10, pady=10)
+                            width=335, height=100, corner_radius=DIMENSIONS["border_radius"])
     humidity_frame.pack_propagate(False)
+    humidity_frame.grid(row=0, column=1, padx=10, pady=10)
+    humidity_img = ctk.CTkImage(Image.open(os.path.join(img_dir, "humidity.png")), size=(20, 20))
+    ctk.CTkLabel(humidity_frame, text="  Humidité", font=FONTS["subtitle"],
+                 image=humidity_img, compound="left", text_color=DARK_COLOR["white"]).place(x=15, y=15)
+    ctk.CTkLabel(humidity_frame, text="25%", font=FONTS["h1"],
+                 text_color=DARK_COLOR["white"]).place(x=15, y=48)
 
-    humidity_img = ctk.CTkImage(Image.open(os.path.join(img_dir, "humidity.png")), size=(20, 22))
-
-    humidity_label = ctk.CTkLabel(humidity_frame, text="Humidité", font=FONTS["subtitle"],image=humidity_img, compound="left", text_color=DARK_COLOR["white"])
-    humidity_label.pack(pady=10, anchor="w", padx=15)
-
-    humidity_value = ctk.CTkLabel(humidity_frame, text="25%", font=FONTS["h1"], text_color=DARK_COLOR["white"])
-    humidity_value.pack(pady=10, anchor="w", padx=15)
-
+    # Vent
     wind_frame = ctk.CTkFrame(cards_frame, fg_color=DARK_COLOR["cards"]["wind"],
-                            width=335, height=100,
-                            corner_radius=DIMENSIONS["border_radius"])
-    wind_frame.grid(row=0, column=2, padx=10, pady=10)
+                            width=335, height=100, corner_radius=DIMENSIONS["border_radius"])
     wind_frame.pack_propagate(False)
-
+    wind_frame.grid(row=0, column=2, padx=10, pady=10)
     wind_img = ctk.CTkImage(Image.open(os.path.join(img_dir, "wind.png")), size=(20, 20))
-
-    wind_label = ctk.CTkLabel(wind_frame, text="Vent", font=FONTS["subtitle"],image=wind_img, compound="left", text_color=DARK_COLOR["white"])
-    wind_label.pack(pady=10, anchor="w", padx=15)
-
-    wind_value = ctk.CTkLabel(wind_frame, text="25 km/h", font=FONTS["h1"], text_color=DARK_COLOR["white"])
-    wind_value.pack(pady=10, anchor="w", padx=15)
+    ctk.CTkLabel(wind_frame, text="  Vent", font=FONTS["subtitle"],
+                 image=wind_img, compound="left", text_color=DARK_COLOR["white"]).place(x=15, y=15)
+    ctk.CTkLabel(wind_frame, text="25 km/h", font=FONTS["h1"],
+                 text_color=DARK_COLOR["white"]).place(x=15, y=48)
 
     # Action frame
-    Action_frame = ctk.CTkFrame(app, fg_color=DARK_COLOR["bg"],
-                  width=1050)
+    Action_frame = ctk.CTkFrame(app, fg_color=DARK_COLOR["white"],
+                  width=1050, height=60)
     Action_frame.pack_propagate(False)
     Action_frame.pack(pady=10, padx=10)
 
