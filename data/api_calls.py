@@ -1,3 +1,5 @@
+import locale
+locale.setlocale(locale.LC_TIME, "fr_FR.UTF-8")
 import requests
 from datetime import datetime
 
@@ -60,6 +62,7 @@ def get_weather(lat, lon, api_key):
 
     # Conversion du timestamp Unix (dt) en date lisible (YYYY-MM-DD).
     date = datetime.fromtimestamp(dt).strftime("%Y-%m-%d")
+    date_labl = datetime.fromtimestamp(dt).strftime("%a, %d %B %Y à %H:%M:%S")
 
     # "mesure" est une liste dans un ordre fixe utilise par queries.py
     # (city, temp, humidity, dt, date).

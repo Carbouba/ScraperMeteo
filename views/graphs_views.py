@@ -1,4 +1,6 @@
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_agg import FigureCanvasAgg
+from PIL import Image, ImageTk
 import numpy as np
 import sys
 sys.path.append("../data")

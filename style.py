@@ -1,11 +1,11 @@
 # ── Palette dark ────────────────────────────────────────────
 DARK_COLOR = {
-    "bg":            "#0F1117",
+    "bg":            "#0f172a",
     "surface":       "#1A1D2E",
-    "surface2":      "#232640",
-    "border":        "#2E3150",
-    "primary":       "#00D4AA",
-    "primary_hover": "#00B891",
+    "surface2":      "#1e293b",
+    "border":        "#334155",
+    "primary":       "#0d9488",
+    "primary_hover": "#0f766e",
     "primary_dim":   "#003D30",
     "danger":        "#FF5C5C",
     "danger_hover":  "#CC3A3A",
@@ -44,12 +44,12 @@ LIGHT_COLOR = {
 
 FONTS = {
     "title": ("Roboto", 24, "bold"),
-    "h1": ("Roboto", 35, "bold"),
+    "h1": ("Roboto", 40, "bold"),
     "subtitle": ("Roboto", 14),
     "button": ("Roboto", 18, "bold"),
     "body": ("Roboto", 13),
     "label":("Roboto", 13, "bold"),
-    "placeholder":("Inter", 15)
+    "placeholder":("Roboto", 15)
 
 }
 

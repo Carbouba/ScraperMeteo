@@ -31,7 +31,7 @@ def get_temp_date():
 
 def get_insert_data():
     # Recupere la meteo courante, puis insere en base si elle n'existe pas deja.
-    coordonnee = get_coordinates("Niamey", API_KEY)
+    coordonnee = get_coordinates("Paris", API_KEY)
 
     # `get_coordinates` renvoie [lat, lon]
     l_at = coordonnee[0]
@@ -49,7 +49,13 @@ def get_insert_data():
 
     # Cree la table si elle n'existe pas encore.
     # (Le schema est simple: city, temp, humidity, dt, date)
-    cur.execute("create table if not exists mesure(city, temp, humidity, dt, date)")
+    #cur.execute("CREATE TABLE IF NOT EXISTS mesure(id INTEGER PRIMARY KEY AUTOINCREMENT, city, temp, humidity, dt, date, wind)")
+
+    #Ajouter une colonne
+    #cur.execute("alter table mesure add column wind")
+
+    # Suppression d'une ligne avec id = 5
+    #cur.execute("DELETE FROM mesure ")
 
     # Deduplication: on verifie si on a deja une ligne pour ce timestamp `dt`.
     cur.execute("select * from mesure where dt = ?", (dt,))
@@ -60,11 +66,13 @@ def get_insert_data():
         pass
     else:
         # Sinon on insere et on commit.
-        cur.execute("insert into mesure values (?, ?, ?, ?, ?)", (name, temp, humidity, dt, date))
+        cur.execute("""INSERT INTO mesure (city, temp, humidity, dt, date, wind)
+                     VALUES (?, ?, ?, ?, ?, ?)""", 
+                     (name, temp, humidity, dt, date, wind))
         con.commit()
 
 
-
+get_insert_data()
 
 
 
